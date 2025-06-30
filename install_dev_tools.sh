@@ -1,3 +1,20 @@
+#!/bin/bash
+
+# Скрипт для встановлення Docker, Docker Compose, Python 3.9+ і Django
+# Працює на Ubuntu/Debian-сумісних дистрибутивах
+
+set -e  # завершити виконання при помилці
+
+# Перевірка ОС
+if [[ "$(uname)" != "Linux" ]]; then
+    echo "Цей скрипт призначений тільки для Linux (Ubuntu/Debian)."
+    exit 1
+fi
+
+# Функція для перевірки наявності команди
+check_command() {
+    command -v "$1" >/dev/null 2>&1
+}
 
 # Встановлення Docker
 install_docker() {
@@ -48,7 +65,7 @@ install_django() {
     if check_command pip3 && python3 -m django --version >/dev/null 2>&1; then
         echo "Django вже встановлено."
     else
-        echo "Встановлення pip та Django..."
+        echo "🔧 Встановлення pip та Django..."
         sudo apt-get install -y python3-pip
         pip3 install --upgrade pip
         pip3 install django
@@ -56,10 +73,10 @@ install_django() {
     fi
 }
 
-# Виконання всіх встановлень
+# Виконання
 install_docker
 install_docker_compose
 install_python
 install_django
 
-echo " Усі інструменти встановлені або вже були встановлені."
+echo "Усі інструменти встановлені або вже були встановлені."
