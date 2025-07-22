@@ -1,0 +1,16 @@
+
+# Ігноруємо файли з чутливими даними
+.env
+
+# Файли Terraform стану
+*.tfstate
+*.tfstate.*
+crash.log
+.terraform/
+.terraform.lock.hcl
+
+# IDE / OS специфічні файли
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
