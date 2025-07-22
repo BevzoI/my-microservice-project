@@ -7,4 +7,9 @@ resource "aws_dynamodb_table" "terraform_locks" {
     name = "LockID"
     type = "S"
   }
+
+  tags = {
+    Name        = var.table_name
+    Environment = "lesson-5"
+  }
 }

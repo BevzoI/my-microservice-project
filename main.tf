@@ -1,7 +1,7 @@
 module "s3_backend" {
   source      = "./modules/s3-backend"
-  bucket_name = "your-unique-s3-bucket-name"
-  table_name  = "terraform-locks"
+  bucket_name = "terraform-iryna-bevzo-state"
+  table_name  = "terraform-locks-iryna"
 }
 
 module "vpc" {
@@ -9,12 +9,12 @@ module "vpc" {
   vpc_cidr_block     = "10.0.0.0/16"
   public_subnets     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   private_subnets    = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
-  availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c"]
-  vpc_name           = "lesson-5-vpc"
+  availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
+  vpc_name           = "iryna-vpc"
 }
 
 module "ecr" {
   source       = "./modules/ecr"
-  ecr_name     = "lesson-5-ecr"
+  ecr_name     = "iryna-ecr"
   scan_on_push = true
 }

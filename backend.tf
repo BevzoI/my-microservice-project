@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket         = "your-unique-s3-bucket-name"
+    bucket         = "terraform-iryna-bevzo-state"
     key            = "lesson-5/terraform.tfstate"
-    region         = "us-west-2"
-    dynamodb_table = "terraform-locks"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-locks-iryna"
     encrypt        = true
   }
 }
