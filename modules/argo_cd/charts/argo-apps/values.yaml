@@ -1,0 +1,15 @@
+applications:
+  - name: django-app
+    namespace: default
+    project: default
+    source:
+      repoURL: https://github.com/BevzoI/my-microservice-project.git
+      targetRevision: lesson-8-9
+      path: charts/django-app
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: default
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
