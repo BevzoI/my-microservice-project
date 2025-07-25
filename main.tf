@@ -39,6 +39,7 @@ module "eks" {
   source           = "./modules/eks"
   subnet_ids       = module.vpc.private_subnet_ids
   cluster_role_arn = aws_iam_role.eks_cluster.arn
+    node_role_arn = module.vpc.node_role_arn
 }
 
 
