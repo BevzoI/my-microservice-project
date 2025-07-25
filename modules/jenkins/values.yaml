@@ -1,0 +1,21 @@
+
+controller:
+  installPlugins:
+    - kubernetes:latest
+    - workflow-aggregator:latest
+    - git:latest
+    - configuration-as-code:latest
+    - docker-workflow:latest
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+  jenkinsAdminUser: admin
+  jenkinsAdminPassword: admin
+
+agent:
+  image: "jenkins/inbound-agent"
+  tag: "latest"
