@@ -23,3 +23,5 @@ __pycache__/
 *.pyo
 echo ".terraform/" >> .gitignore
 .terraform/
+.terraform/
+.env
