@@ -1,1 +1,24 @@
+# Terraform state
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+# Crash log
+crash.log
+
+# .terraform directory
+.terraform/
+
+# Override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Sensitive files
+.env
+.venv/
+__pycache__/
+*.pyc
+*.pyo
 echo ".terraform/" >> .gitignore
