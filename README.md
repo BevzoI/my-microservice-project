@@ -1,123 +1,69 @@
-# Домашнє завдання: Argo CD + CI/CD
 
-Цей проєкт реалізує повний DevOps-конвеєр для Django-застосунку з використанням:
+# Terraform RDS Module
 
-- Jenkins (CI)
-- Amazon ECR (Docker Registry)
-- Helm (Deployment)
-- Argo CD (GitOps)
-- Terraform (інфраструктура як код)
+Універсальний Terraform-модуль для створення бази даних у AWS. Підтримує як звичайну RDS instance, так і Aurora кластер.
 
----
+## Можливості
 
-##  Структура CI/CD
+- Підтримка перемикача use_aurora = true/false
+- Автоматичне створення:
+  - DB Subnet Group
+  - Security Group
+  - Parameter Group
+- Повністю конфігурується через змінні
 
-### CI (Jenkins)
+## Приклад використання
 
-1. **Jenkinsfile** автоматично:
-   - Клонує репозиторій
-   - Будує Docker-образ за допомогою Kaniko
-   - Публікує його в Amazon ECR
-   - Оновлює `charts/django-app/values.yaml` з новим тегом
-   - Пушить зміни в гілку `lesson-8-9`
+module "rds" {
+  source                = "./modules/rds"
 
-> Використовується Jenkins Kubernetes Agent з образом `kaniko`.
+  name                  = "prod-db"
+  use_aurora            = true
+  engine                = "aurora-postgresql"
+  engine_version        = "15.3"
+  instance_class        = "db.t3.medium"
+  allocated_storage     = 20
 
----
+  username              = "dbmaster"
+  password              = "SuperSecurePass123!"
 
-### CD (Argo CD)
+  vpc_id                = module.vpc.vpc_id
+  subnet_ids            = module.vpc.private_subnet_ids
+  allowed_cidr_blocks   = ["10.0.0.0/16"]
 
-1. **Argo CD** розгортається через Helm (`modules/argo_cd`)
-2. Використовується Helm-чарт `argo-apps`, який створює ArgoCD Application:
-   - Repo: https://github.com/BevzoI/my-microservice-project.git
-   - Path: `charts/django-app`
-   - Гілка: `lesson-8-9`
-3. Після зміни у `values.yaml`, ArgoCD автоматично синхронізує деплоймент у кластері
+  publicly_accessible   = false
+  multi_az              = false
 
----
+  parameter_group_family = "aurora-postgresql15"
+  max_connections        = "150"
+  log_statement          = "mod"
+  work_mem               = "8MB"
+  port                   = 5432
+}
 
-## Як розгорнути
+## Змінні
 
-### 1. Ініціалізувати Terraform
-```bash
-cd your-project/
-terraform init
-terraform apply
-```
+- `use_aurora` — true або false, вибір між Aurora та звичайною RDS
+- `engine`, `engine_version`, `instance_class` — характеристики бази
+- `username`, `password` — креденшели адміністратора
+- `vpc_id`, `subnet_ids`, `allowed_cidr_blocks` — мережеві налаштування
+- `parameter_group_family`, `log_statement`, `work_mem`, `max_connections`, `port` — параметри конфігурації
 
-### 2. Створити секрет з AWS-ключами для Jenkins
-```bash
-kubectl create secret generic aws-ecr-creds \
-  --from-literal=aws_access_key_id=<YOUR_KEY> \
-  --from-literal=aws_secret_access_key=<YOUR_SECRET> \
-  -n jenkins
-```
+## Outputs
 
-### 3. Додати GitHub Token до Jenkins Credentials
-- ID: `github-token`
-- Type: Secret Text
-- Value: `<your_github_pat>`
+- `db_endpoint`
+- `db_port`
+- `db_subnet_group`
+- `db_security_group_id`
+- `db_parameter_group`
 
-### 4. Запустити Jenkins pipeline
-- Він автоматично:
-  - Збере образ
-  - Пушить у ECR
-  - Оновить Helm chart
-  - Git push
-  - ArgoCD виконає автодеплой
+## Інструкція
 
----
+1. Ініціалізуйте Terraform:
+   terraform init
 
-## 📁 Шлях до Helm chart
-- `charts/django-app/` — основний Helm chart
-- `modules/argo_cd/charts/argo-apps/` — Argo CD Application chart
+2. Перевірте:
+   terraform plan
 
----
-
-## ✅ Готово!
-
-Система повністю автоматизована: від push-а коду — до оновлення застосунку у Kubernetes через Argo CD.
----
-
-## 🔄 CI/CD Pipeline Overview
-
-Цей проєкт реалізує повний CI/CD-процес за допомогою **Jenkins + Terraform + Helm + Argo CD**:
-
-### 🧱 Інфраструктура
-- **Terraform** створює:
-  - S3 + DynamoDB для бекенду
-  - VPC + EKS кластер
-  - Jenkins (через Helm)
-  - Argo CD (через Helm)
-  - ECR репозиторій
-
-### ⚙️ Jenkins Pipeline
-Реалізовано у `Jenkinsfile`:
-1. **Збір Docker-образу**
-2. **Публікація в Amazon ECR**
-3. **Оновлення `values.yaml` Helm-чарта з новим тегом**
-4. **Push у GitHub — Argo CD підхоплює зміни**
-
-### 🚀 Argo CD
-- Argo CD автоматично синхронізує застосунок із кластером, коли змінюється Helm chart у Git.
-- Використовує Helm-чарт `charts/django-app/`.
-
----
-
-## 📦 Команди
-
-### Terraform
-```bash
-terraform init
-terraform apply
-```
-
-### Jenkins
-- Доступ після деплою: `http://<jenkins-url>`
-- Логін/пароль: `admin` / `admin` (див. `values.yaml`)
-
-### Argo CD
-- Доступ після деплою: `http://<argocd-url>`
-- Логін: `admin`, пароль з `kubectl -n argocd get secret argocd-initial-admin-secret`
-
----
+3. Застосуйте:
+   terraform apply
