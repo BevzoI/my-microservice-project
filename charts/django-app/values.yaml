@@ -1,0 +1,33 @@
+
+replicaCount: 2
+
+image:
+  repository: <your-ecr-repo-url>
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 8000
+
+env:
+  DJANGO_SECRET_KEY: "your-secret-key"
+  DB_HOST: "your-db-host"
+  DB_PORT: "5432"
+  DB_NAME: "django_db"
+  DB_USER: "admin"
+  DB_PASSWORD: "SuperSecure123!"
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 75

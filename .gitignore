@@ -1,0 +1,29 @@
+# Terraform state
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+# Terraform directory
+.terraform/
+
+# Terraform override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Crash logs
+crash.log
+
+# Sensitive and environment files
+.env
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Архіви CI/CD проєкту
+*.zip
+*.tar.gz
+*.rar
+setup.sh
