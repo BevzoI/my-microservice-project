@@ -1,2 +1,35 @@
-# Jenkinsfile
-# TODO: Pipeline для CI/CD
+
+pipeline {
+  agent any
+
+  environment {
+    ECR_REPO = "your-aws-account-id.dkr.ecr.eu-central-1.amazonaws.com/your-django-app"
+    IMAGE_TAG = "latest"
+  }
+
+  stages {
+    stage('Build') {
+      steps {
+        sh 'docker build -t $ECR_REPO:$IMAGE_TAG .'
+      }
+    }
+
+    stage('Login to ECR') {
+      steps {
+        sh 'aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin $ECR_REPO'
+      }
+    }
+
+    stage('Push to ECR') {
+      steps {
+        sh 'docker push $ECR_REPO:$IMAGE_TAG'
+      }
+    }
+
+    stage('Deploy with ArgoCD') {
+      steps {
+        sh 'echo "Trigger ArgoCD Sync via CLI or webhook"'
+      }
+    }
+  }
+}

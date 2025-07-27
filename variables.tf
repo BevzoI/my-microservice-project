@@ -4,9 +4,11 @@ variable "region" {
 }
 
 variable "project_name" {
-  description = "Project name used for tagging"
   type        = string
+  description = "Project name for ECR repository"
+  default     = "my-microservice-project"
 }
+
 
 variable "environment" {
   description = "Environment name (e.g., dev, staging, prod)"
@@ -79,3 +81,14 @@ variable "jenkins_admin_password" {
   type        = string
   sensitive   = true
 }
+
+variable "bucket_name" {
+  description = "Name of the S3 bucket for Terraform backend"
+  type        = string
+}
+
+variable "table_name" {
+  description = "Name of the DynamoDB table for Terraform lock"
+  type        = string
+}
+
