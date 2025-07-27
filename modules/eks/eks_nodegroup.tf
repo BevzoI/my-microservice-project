@@ -1,6 +1,7 @@
 resource "aws_eks_node_group" "default" {
   cluster_name    = aws_eks_cluster.this.name
-  node_group_name = "demo-node-group-2" 
+  version         = "1.32"
+  node_group_name = "demo-node-group-3" 
   node_role_arn   = var.node_role_arn
   subnet_ids      = var.subnet_ids
 
