@@ -13,9 +13,9 @@ variable "node_role_arn" {
   description = "IAM Role ARN for EKS node group"
 }
 
-variable "private_subnets" {
+variable "subnet_ids" {
   type        = list(string)
-  description = "List of private subnet IDs"
+  description = "List of subnet IDs for EKS cluster and node group"
 }
 
 variable "instance_types" {
@@ -25,17 +25,22 @@ variable "instance_types" {
 }
 
 variable "node_desired_capacity" {
-  type        = number
-  default     = 2
+  type    = number
+  default = 2
 }
 
 variable "node_min_capacity" {
-  type        = number
-  default     = 1
+  type    = number
+  default = 1
 }
 
 variable "node_max_capacity" {
-  type        = number
-  default     = 3
+  type    = number
+  default = 3
 }
 
+variable "common_tags" {
+  description = "Common tags for all resources"
+  type        = map(string)
+  default     = {}
+}

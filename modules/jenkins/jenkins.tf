@@ -1,9 +1,3 @@
-provider "helm" {
-  kubernetes {
-    config_path = var.kubeconfig_path
-  }
-}
-
 resource "helm_release" "jenkins" {
   name       = "jenkins"
   repository = "https://charts.jenkins.io"
@@ -11,9 +5,7 @@ resource "helm_release" "jenkins" {
   namespace  = var.namespace
 
   create_namespace = true
-  version          = var.chart_version
+  version          = "4.10.0"  
 
   values = [file("${path.module}/values.yaml")]
-
-  depends_on = [module.eks]
 }

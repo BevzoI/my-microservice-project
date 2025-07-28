@@ -1,7 +1,7 @@
 resource "aws_s3_bucket" "terraform_state" {
   bucket = var.bucket_name
 
-  acl    = "private"
+  # acl = "private"  # Прибрано, бо ACL зараз не підтримується новими бакетами
 
   versioning {
     enabled = true

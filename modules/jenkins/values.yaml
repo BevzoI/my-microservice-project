@@ -1,6 +1,7 @@
 controller:
   adminUser: admin
-  adminPassword: 03102020
+  # Пароль можна залишити порожнім, щоб згенерувався автоматично або створити секрет окремо
+  adminPassword: ""
   serviceType: LoadBalancer
   resources:
     requests:

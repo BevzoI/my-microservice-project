@@ -3,20 +3,17 @@ resource "aws_eks_cluster" "this" {
   role_arn = var.cluster_role_arn
 
   vpc_config {
-    subnet_ids = var.private_subnets
+    subnet_ids = var.subnet_ids
   }
 
-  depends_on = [
-    aws_iam_role_policy_attachment.cluster_AmazonEKSClusterPolicy,
-    aws_iam_role_policy_attachment.cluster_AmazonEKSVPCResourceController,
-  ]
+  # depends_on прибрано, бо ролі створені зовні
 }
 
 resource "aws_eks_node_group" "this" {
   cluster_name    = aws_eks_cluster.this.name
   node_group_name = "${var.cluster_name}-node-group"
   node_role_arn   = var.node_role_arn
-  subnet_ids      = var.private_subnets
+  subnet_ids      = var.subnet_ids
 
   scaling_config {
     desired_size = var.node_desired_capacity

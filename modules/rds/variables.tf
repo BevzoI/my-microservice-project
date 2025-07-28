@@ -99,3 +99,9 @@ variable "port" {
   type        = number
   default     = 5432
 }
+
+variable "tags" {
+  description = "Tags for resources"
+  type        = map(string)
+  default     = {}
+}

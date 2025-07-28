@@ -19,7 +19,7 @@ variable "dynamodb_table_name" {
 variable "common_tags" {
   description = "Common tags for all resources"
   type        = map(string)
-  default     = {
+  default = {
     Environment = "dev"
     Project     = "final-devops"
   }
