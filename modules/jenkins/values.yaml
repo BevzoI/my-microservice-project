@@ -1,19 +1,20 @@
-
 controller:
-  adminUser: "${jenkins_admin_user}"
-  adminPassword: "${jenkins_admin_password}"
-  installPlugins:
-    - kubernetes
-    - workflow-aggregator
-    - git
-    - configuration-as-code
-    - blueocean
+  adminUser: admin
+  adminPassword: 03102020
+  serviceType: LoadBalancer
   resources:
     requests:
-      cpu: "100m"
-      memory: "512Mi"
-    limits:
       cpu: "500m"
       memory: "1Gi"
+    limits:
+      cpu: "1"
+      memory: "2Gi"
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
 persistence:
-  enabled: false
+  enabled: true
+  size: 8Gi
+  storageClass: "gp2"
+rbac:
+  create: true

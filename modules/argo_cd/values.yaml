@@ -1,19 +1,12 @@
+server:
+  service:
+    type: LoadBalancer
 
-controller:
-  adminUser: admin
-  adminPassword: admin123
+configs:
+  cm:
+    application.instanceLabelKey: argocd.argoproj.io/instance
 
-service:
-  type: ClusterIP
-  port: 8080
-
-persistence:
-  enabled: false
-
-resources:
-  requests:
-    cpu: "100m"
-    memory: "256Mi"
-  limits:
-    cpu: "500m"
-    memory: "512Mi"
+rbac:
+  policy.default: role:readonly
+  policy.csv: |
+    g, admin, role:admin

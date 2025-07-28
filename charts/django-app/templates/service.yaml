@@ -1,2 +1,11 @@
-# service.yaml
-# TODO: Service for Django
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: django
+  ports:
+    - port: 80
+      targetPort: 8000

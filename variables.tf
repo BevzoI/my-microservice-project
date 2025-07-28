@@ -1,94 +1,38 @@
-variable "region" {
+variable "aws_region" {
   description = "AWS region"
   type        = string
+  default     = "eu-central-1"
 }
 
-variable "project_name" {
+variable "s3_bucket_name" {
+  description = "S3 bucket name for terraform state"
   type        = string
-  description = "Project name for ECR repository"
-  default     = "my-microservice-project"
+  default     = "my-terraform-state-bevzo-2025"
 }
 
-
-variable "environment" {
-  description = "Environment name (e.g., dev, staging, prod)"
+variable "dynamodb_table_name" {
+  description = "DynamoDB table name for terraform state lock"
   type        = string
+  default     = "terraform-locks-bevzo"
 }
 
-variable "vpc_cidr_block" {
-  description = "CIDR block for the VPC"
-  type        = string
-}
-
-variable "public_subnets" {
-  description = "List of public subnet CIDRs"
-  type        = list(string)
-}
-
-variable "private_subnets" {
-  description = "List of private subnet CIDRs"
-  type        = list(string)
-}
-
-variable "eks_cluster_name" {
-  description = "EKS cluster name"
-  type        = string
-}
-
-variable "eks_node_instance_type" {
-  description = "Instance type for EKS worker nodes"
-  type        = string
-}
-
-variable "eks_desired_capacity" {
-  description = "Desired number of worker nodes"
-  type        = number
-}
-
-variable "eks_max_size" {
-  description = "Maximum number of worker nodes"
-  type        = number
-}
-
-variable "eks_min_size" {
-  description = "Minimum number of worker nodes"
-  type        = number
+variable "common_tags" {
+  description = "Common tags for all resources"
+  type        = map(string)
+  default     = {
+    Environment = "dev"
+    Project     = "final-devops"
+  }
 }
 
 variable "db_username" {
-  description = "Username for the RDS database"
+  description = "Database master username"
   type        = string
+  default     = "dbmaster"
 }
 
 variable "db_password" {
-  description = "Password for the RDS database"
+  description = "Database master password"
   type        = string
   sensitive   = true
 }
-
-variable "db_name" {
-  description = "Name of the RDS database"
-  type        = string
-}
-
-variable "jenkins_admin_user" {
-  description = "Admin user for Jenkins"
-  type        = string
-}
-
-variable "jenkins_admin_password" {
-  description = "Admin password for Jenkins"
-  type        = string
-  sensitive   = true
-}
-
-variable "bucket_name" {
-  description = "Name of the S3 bucket for Terraform backend"
-  type        = string
-}
-
-variable "table_name" {
-  description = "Name of the DynamoDB table for Terraform lock"
-  type        = string
-}
-

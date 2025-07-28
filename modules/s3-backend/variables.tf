@@ -1,7 +1,15 @@
 variable "bucket_name" {
-  type = string
+  description = "The name of the S3 bucket"
+  type        = string
 }
 
-variable "table_name" {
-  type = string
+variable "dynamodb_table_name" {
+  description = "The name of the DynamoDB table for Terraform state locking"
+  type        = string
+}
+
+variable "tags" {
+  description = "Tags to apply to resources"
+  type        = map(string)
+  default     = {}
 }

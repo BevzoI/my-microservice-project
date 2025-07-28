@@ -1,17 +1,19 @@
+provider "helm" {
+  kubernetes {
+    config_path = var.kubeconfig_path
+  }
+}
 
 resource "helm_release" "jenkins" {
   name       = "jenkins"
-  namespace  = "jenkins"
-  create_namespace = true
-
   repository = "https://charts.jenkins.io"
   chart      = "jenkins"
-  version    = "4.5.2"
+  namespace  = var.namespace
 
-  values = [
-    templatefile("${path.module}/values.yaml", {
-      jenkins_admin_user     = var.jenkins_admin_user
-      jenkins_admin_password = var.jenkins_admin_password
-    })
-  ]
+  create_namespace = true
+  version          = var.chart_version
+
+  values = [file("${path.module}/values.yaml")]
+
+  depends_on = [module.eks]
 }
